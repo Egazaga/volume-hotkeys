@@ -5,6 +5,7 @@ from pynput.keyboard import Listener, Key
 
 
 def on_press(key):
+    print(key)
     if type(key) == Key:
         return
     if key.vk == 169:
@@ -26,11 +27,16 @@ if __name__ == "__main__":
     listener = Listener(on_press=on_press)
     listener.start()
     while True:
-        if len(queue):
+        while len(queue):
+            from pycaw.pycaw import AudioUtilities
             val = queue.pop()
             sessions = AudioUtilities.GetAllSessions()
             for session in sessions:
                 if session.Process and session.Process.name() == "Y.Music.exe":
+                    change_volume(session, 0.1)
+                if session.Process and session.Process.name() == "Яндекс Музыка.exe":
+                    change_volume(session, 0.1)
+                if session.Process and session.Process.name() == "YouTube Music Desktop App.exe":
                     change_volume(session, 0.1)
                 if session.Process and session.Process.name() == "wmplayer.exe":
                     change_volume(session, 0.01)
